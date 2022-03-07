@@ -6,17 +6,14 @@ package com.qin.returnJson;
  */
 public class UserInfo {
     
-    public UserInfo() {
-    }
+    private String name;
+    private String avatar = "/avatar2.jpg";
+    private Permissions role;
     
     public UserInfo(String name, Permissions role) {
         this.name = name;
         this.role = role;
     }
-    
-    private String name;
-    private String avatar="/avatar2.jpg";
-    private Permissions role;
     
     public String getName() {
         return name;

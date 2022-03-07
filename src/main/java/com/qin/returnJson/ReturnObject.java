@@ -6,8 +6,8 @@ package com.qin.returnJson;
  */
 public class ReturnObject {
     
-    private Integer code=200;
-    private String message=null;
+    private Integer code = 200;
+    private String message = "";
     private Object result;
     
     public ReturnObject() {

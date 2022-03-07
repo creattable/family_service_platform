@@ -14,15 +14,18 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * @author 秦家乐
  * @date 2022/3/6 15:20
  */
 
 
-@RestController
+
 //跨域的问题，还是用注解方便的多,但以后每个跨域都要写，写配置类就是全局了，以后都不用写了
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {}, allowCredentials = "true")
+@RestController
+@CrossOrigin(origins = "*",allowedHeaders = "*",methods = {},allowCredentials = "true")
+
 public class LoginController {
     
     //有可能会提示报错，但实际没问题，如果觉得难受，就在上面加个@Component
@@ -31,10 +34,9 @@ public class LoginController {
     
     
     @RequestMapping("/auth/2step-code")
-    public Boolean test() {
-        System.out.println("前端框架自带的一个验证规则，对于后端没有意义，写不写无所谓");
+    public Boolean test(){
+        System.out.println("前端框架自带的一个验证规则，写不写无所谓");
         return true;
-        
     }
     
     
@@ -55,17 +57,14 @@ public class LoginController {
      * */
     
     @RequestMapping("/auth/login")
-    public String login(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
+    public String login(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session){
         System.out.println("login");
-        TblUserRecord tblUserRecord = loginService.login(username, password);
+        TblUserRecord tblUserRecord = loginService.login(username,password);
         tblUserRecord.setToken(tblUserRecord.getUserName());
-        
         //将用户数据写入到session中
-        session.setAttribute("userRecord", tblUserRecord);
-        
+        session.setAttribute("userRecord",tblUserRecord);
         ReturnObject returnObject = new ReturnObject(tblUserRecord);
         return JSONObject.toJSONString(returnObject);
-        
     }
     
     
@@ -94,7 +93,6 @@ public class LoginController {
         //设置返回指定result
         UserInfo userInfo = new UserInfo(tblUserRecord.getUserName(),permissions);
         return JSONObject.toJSONString(new ReturnObject(userInfo));
-        
     }
     
     
