@@ -3,15 +3,15 @@ package com.qin.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.qin.bean.FcBuilding;
 import com.qin.bean.FcEstate;
+import com.qin.bean.FcUnit;
 import com.qin.bean.TblCompany;
 import com.qin.returnJson.ReturnObject;
 import com.qin.service.EstateService;
+import com.qin.vo.UnitMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,6 +75,36 @@ public class EstateController {
         } else {
             return JSONObject.toJSONString(new ReturnObject("更新楼宇失败"));
         }
+    }
+    
+    
+    //设置在step3里面检索和显示unit
+    @RequestMapping("/estate/selectUnit")
+    //接收过来的buildingCode是个数组，传来的格式大概是[{k=v},{k=v}]的格式
+    //有时候需要额外创建一个类用来接收和处理
+    public String selectUnit(@RequestBody UnitMessage[] unitMessages){
+        System.out.println("estate selectUnit");
+        List<FcUnit> allUnit=new ArrayList<>();
+        //这里因为返回的数组，如果在server层想要遍历
+        //就只能把这个集合往一个数组里面插入
+        for (UnitMessage unitMessage : unitMessages) {
+            allUnit.addAll(estateService.selectUnit(unitMessage));
+        }
+        
+        return JSONObject.toJSONString(new ReturnObject(allUnit));
+    
+    }
+    
+    
+    @RequestMapping("/estate/updateUnit")
+    public String updateUnit(FcUnit fcUnit){
+        Integer result = estateService.updateUnit(fcUnit);
+        if(result==1){
+            return JSONObject.toJSONString(new ReturnObject("更新单元成功"));
+        }else {
+            return JSONObject.toJSONString(new ReturnObject("更新单元失败"));
+        }
+        
     }
     
     

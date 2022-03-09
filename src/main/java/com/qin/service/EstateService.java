@@ -1,14 +1,9 @@
 package com.qin.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.qin.bean.FcBuilding;
-import com.qin.bean.FcEstate;
-import com.qin.bean.TblCompany;
-import com.qin.bean.TblUserRecord;
-import com.qin.mapper.FcBuildingMapper;
-import com.qin.mapper.FcEstateMapper;
-import com.qin.mapper.TblCompanyMapper;
-import com.qin.mapper.TblUserRecordMapper;
+import com.qin.bean.*;
+import com.qin.mapper.*;
+import com.qin.vo.UnitMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +17,8 @@ import java.util.List;
 
 @Service
 public class EstateService {
+    
+    //有时候接口类会报错，如果报错就在里面加一个@Component就行了
 
     @Autowired
     private TblCompanyMapper tblCompanyMapper;
@@ -29,6 +26,8 @@ public class EstateService {
     private FcEstateMapper fcEstateMapper;
     @Autowired
     private FcBuildingMapper fcBuildingMapper;
+    @Autowired
+    private FcUnitMapper fcUnitMapper;
 
     public List<TblCompany> selectCompany(){
         List<TblCompany> companys = tblCompanyMapper.selectCompany();
@@ -90,6 +89,28 @@ public class EstateService {
         int result = fcBuildingMapper.updateById(fcBuilding);
         return result;
     
+    }
+    
+    
+    public List<FcUnit> selectUnit(UnitMessage unitMessage){
+        //定义返回值集合
+        List<FcUnit> fcUnits=new ArrayList<>();
+        for(int i=0;i<unitMessage.getUnitCount();i++){
+            FcUnit fcUnit=new FcUnit();
+            fcUnit.setBuildingCode(unitMessage.getBuildingCode());
+            fcUnit.setUnitCode("U"+(i+1));
+            fcUnit.setUnitName("第"+(i+1)+"单元");
+            fcUnitMapper.insert(fcUnit);
+            fcUnits.add(fcUnit);
+        }
+        return fcUnits;
+        
+    }
+    
+    
+    public Integer updateUnit(FcUnit fcUnit){
+        int i = fcUnitMapper.updateById(fcUnit);
+        return i;
     }
     
     
