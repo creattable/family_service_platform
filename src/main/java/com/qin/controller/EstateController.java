@@ -1,12 +1,10 @@
 package com.qin.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.qin.bean.FcBuilding;
-import com.qin.bean.FcEstate;
-import com.qin.bean.FcUnit;
-import com.qin.bean.TblCompany;
+import com.qin.bean.*;
 import com.qin.returnJson.ReturnObject;
 import com.qin.service.EstateService;
+import com.qin.vo.CellMessage;
 import com.qin.vo.UnitMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -105,6 +103,25 @@ public class EstateController {
             return JSONObject.toJSONString(new ReturnObject("更新单元失败"));
         }
         
+    }
+    
+    
+    
+    /*
+    * 维护房间信息，
+    * 因为楼宇，单元，房间都是一对多的关系
+    * 如果全都一次性显示出来，那每次都是100+条数据
+    * 因此，前端设置楼宇，单元，房间等字段，让用户选择那些维护
+    *
+    * */
+    
+    @RequestMapping("/estate/insertCell")
+    public String insertCell(@RequestBody CellMessage[] cellMessages){
+        System.out.println("insert cell");
+        List<FcCell> fcCells = estateService.insertCell(cellMessages);
+        return JSONObject.toJSONString(new ReturnObject(fcCells));
+    
+    
     }
     
     

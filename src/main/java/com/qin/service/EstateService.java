@@ -3,6 +3,7 @@ package com.qin.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qin.bean.*;
 import com.qin.mapper.*;
+import com.qin.vo.CellMessage;
 import com.qin.vo.UnitMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class EstateService {
     private FcBuildingMapper fcBuildingMapper;
     @Autowired
     private FcUnitMapper fcUnitMapper;
+    @Autowired
+    private FcCellMapper fcCellMapper;
 
     public List<TblCompany> selectCompany(){
         List<TblCompany> companys = tblCompanyMapper.selectCompany();
@@ -111,6 +114,33 @@ public class EstateService {
     public Integer updateUnit(FcUnit fcUnit){
         int i = fcUnitMapper.updateById(fcUnit);
         return i;
+    }
+    
+    
+    public List<FcCell> insertCell(CellMessage[] cellMessages){
+    
+        List<FcCell> lists = new ArrayList<>();
+        //这个数组的循环写在外面也行，但写在controller层不美观
+        for (CellMessage cellMessage : cellMessages) {
+            //注意是从1开始，先写楼层，因为嵌套的逻辑
+            //楼层
+            for(int i = 1;i<=cellMessage.getStopFloor();i++){
+                //房间号
+                for(int j = cellMessage.getStartCellId();j<=cellMessage.getStopCellId();j++){
+                    FcCell fcCell = new FcCell();
+                    fcCell.setUnitCode(cellMessage.getUnitCode());
+                    //这里的编码自己随便写
+                    fcCell.setCellName(i+"0"+j);
+                    fcCell.setCellCode("C"+i+"0"+j);
+                    fcCell.setFloorNumber(i);
+                    fcCellMapper.insert(fcCell);
+                    lists.add(fcCell);
+                }
+            }
+        }
+        
+        return lists;
+        
     }
     
     
