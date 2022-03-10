@@ -156,4 +156,16 @@ public class EstateController {
     }
     
     
+    //根据前端的company序号来查询公司和住宅,一个表查询
+    @RequestMapping("/estate/selectEstate")
+    public String selectEstate(String company){
+        System.out.println("estate company");
+        System.out.println(company);
+        List<FcEstate> fcEstates = estateService.selectEstate(company);
+        
+        return JSONObject.toJSONString(new ReturnObject(fcEstates));
+        
+    }
+    
+    
 }

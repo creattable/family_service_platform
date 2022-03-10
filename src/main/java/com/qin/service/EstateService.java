@@ -172,4 +172,15 @@ public class EstateService {
     }
     
     
+    public List<FcEstate> selectEstate(String company){
+        QueryWrapper<FcEstate> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("company", company);
+        List<FcEstate> fcEstates = fcEstateMapper.selectList(queryWrapper);
+        System.out.println(fcEstates);
+        return fcEstates;
+    
+    }
+    
+    
+    
 }
