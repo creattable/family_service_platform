@@ -80,9 +80,9 @@ public class EstateController {
     @RequestMapping("/estate/selectUnit")
     //接收过来的buildingCode是个数组，传来的格式大概是[{k=v},{k=v}]的格式
     //有时候需要额外创建一个类用来接收和处理
-    public String selectUnit(@RequestBody UnitMessage[] unitMessages){
+    public String selectUnit(@RequestBody UnitMessage[] unitMessages) {
         System.out.println("estate selectUnit");
-        List<FcUnit> allUnit=new ArrayList<>();
+        List<FcUnit> allUnit = new ArrayList<>();
         //这里因为返回的数组，如果在server层想要遍历
         //就只能把这个集合往一个数组里面插入
         for (UnitMessage unitMessage : unitMessages) {
@@ -90,16 +90,16 @@ public class EstateController {
         }
         
         return JSONObject.toJSONString(new ReturnObject(allUnit));
-    
+        
     }
     
     
     @RequestMapping("/estate/updateUnit")
-    public String updateUnit(FcUnit fcUnit){
+    public String updateUnit(FcUnit fcUnit) {
         Integer result = estateService.updateUnit(fcUnit);
-        if(result==1){
+        if (result == 1) {
             return JSONObject.toJSONString(new ReturnObject("更新单元成功"));
-        }else {
+        } else {
             return JSONObject.toJSONString(new ReturnObject("更新单元失败"));
         }
         
@@ -108,20 +108,51 @@ public class EstateController {
     
     
     /*
-    * 维护房间信息，
-    * 因为楼宇，单元，房间都是一对多的关系
-    * 如果全都一次性显示出来，那每次都是100+条数据
-    * 因此，前端设置楼宇，单元，房间等字段，让用户选择那些维护
-    *
-    * */
+     * 维护房间信息，
+     * 因为楼宇，单元，房间都是一对多的关系
+     * 如果全都一次性显示出来，那每次都是100+条数据
+     * 因此，前端设置楼宇，单元，房间等字段，让用户选择那些维护
+     *
+     * */
     
     @RequestMapping("/estate/insertCell")
-    public String insertCell(@RequestBody CellMessage[] cellMessages){
+    public String insertCell(@RequestBody CellMessage[] cellMessages) {
         System.out.println("insert cell");
         List<FcCell> fcCells = estateService.insertCell(cellMessages);
         return JSONObject.toJSONString(new ReturnObject(fcCells));
+    }
     
     
+    //在step4中通过estate_code来查询楼宇，和selectBuilding类似，但不需要插入数据
+    @RequestMapping("/estate/selectBuildingByEstate")
+    public String selectBuildingByEstate(String estateCode) {
+        System.out.println("estate:" + estateCode);
+        List<FcBuilding> fcBuildings = estateService.selectBuildingByEstate(estateCode);
+        System.out.println("----------------");
+        System.out.println(fcBuildings);
+        return JSONObject.toJSONString(new ReturnObject(fcBuildings));
+        
+    }
+    
+    
+    //根据楼宇信息查询单元，还是一样的问题selectUnit里面有插入
+    @RequestMapping("/estate/selectUnitByBuildingCode")
+    public String selectUnitByBuildingCode(String buildingCode) {
+        System.out.println("select unit");
+        List<FcUnit> fcUnits = estateService.selectUnitByBuildingCode(buildingCode);
+        System.out.println(fcUnits.size());
+        return JSONObject.toJSONString(new ReturnObject(fcUnits));
+        
+    }
+    
+    //根据楼宇查出来的单元，再根据单元查出来具体的房间
+    @RequestMapping("/estate/selectCell")
+    public String selectCell(String unitCode) {
+        System.out.println("select cell");
+        List<FcCell> fcCells = estateService.selectCell(unitCode);
+        System.out.println("----------------");
+        System.out.println(fcCells.size());
+        return JSONObject.toJSONString(new ReturnObject(fcCells));
     }
     
     
