@@ -24,7 +24,7 @@ import java.util.List;
 
 //跨域的问题，还是用注解方便的多,但以后每个跨域都要写，写配置类就是全局了，以后都不用写了
 @RestController
-@CrossOrigin(origins = "*",allowedHeaders = "*",methods = {},allowCredentials = "true")
+@CrossOrigin(originPatterns = "*",allowedHeaders = "*",methods = {},allowCredentials = "true")
 
 public class LoginController {
     

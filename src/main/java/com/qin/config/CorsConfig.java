@@ -22,11 +22,11 @@ public class CorsConfig {
 
     
     private CorsConfiguration buildConfig(){
-        
+
         CorsConfiguration configuration=new CorsConfiguration();
         //设置属性
         //允许跨域请求的地址,*表示所有
-        configuration.addAllowedOrigin("*");
+        configuration.addAllowedOriginPattern("*");
         //配置跨域的请求头
         configuration.addAllowedHeader("*");
         //配置跨域的请求的方法
@@ -35,19 +35,19 @@ public class CorsConfig {
         //如果不配置的话，后面可能每一个请求都是一个新的session
         configuration.setAllowCredentials(true);
         return  configuration;
-        
+
     }
-    
-    
+
+
     @Bean
     public CorsFilter corsFilter(){
-    
+
         //小心导错包
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",buildConfig());
         return new CorsFilter(source);
-        
-        
+
+
     }
     
     

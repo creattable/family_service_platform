@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {}, allowCredentials = "true")
+@CrossOrigin(originPatterns = "*", allowedHeaders = "*", methods = {}, allowCredentials = "true")
 
 public class EstateController {
     
@@ -131,7 +131,7 @@ public class EstateController {
         System.out.println("----------------");
         System.out.println(fcBuildings);
         return JSONObject.toJSONString(new ReturnObject(fcBuildings));
-        
+
     }
     
     
@@ -142,7 +142,6 @@ public class EstateController {
         List<FcUnit> fcUnits = estateService.selectUnitByBuildingCode(buildingCode);
         System.out.println(fcUnits.size());
         return JSONObject.toJSONString(new ReturnObject(fcUnits));
-        
     }
     
     //根据楼宇查出来的单元，再根据单元查出来具体的房间
@@ -162,9 +161,21 @@ public class EstateController {
         System.out.println("estate company");
         System.out.println(company);
         List<FcEstate> fcEstates = estateService.selectEstate(company);
-        
         return JSONObject.toJSONString(new ReturnObject(fcEstates));
-        
+    }
+    
+    //维护房间信息
+    @RequestMapping("/estate/updateCell")
+    public String updateCell(FcCell fcCell){
+        System.out.println("updateCell");
+        System.out.println(fcCell);
+        Integer result = estateService.updateCell(fcCell);
+        if(result==1){
+            return JSONObject.toJSONString(new ReturnObject("更新单元成功"));
+        }else {
+            return JSONObject.toJSONString(new ReturnObject("更新单元失败"));
+        }
+    
     }
     
     

@@ -118,7 +118,7 @@ public class EstateService {
     
     
     public List<FcCell> insertCell(CellMessage[] cellMessages) {
-        
+
         List<FcCell> lists = new ArrayList<>();
         //这个数组的循环写在外面也行，但写在controller层不美观
         for (CellMessage cellMessage : cellMessages) {
@@ -138,12 +138,12 @@ public class EstateService {
                 }
             }
         }
-        
+
         return lists;
-        
+
     }
-    
-    
+
+
     public List<FcBuilding> selectBuildingByEstate(String estateCode) {
         QueryWrapper<FcBuilding> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("estate_code", estateCode);
@@ -151,34 +151,39 @@ public class EstateService {
         queryWrapper.select("building_name", "building_code");
         List<FcBuilding> fcBuildings = fcBuildingMapper.selectList(queryWrapper);
         return fcBuildings;
-        
+
     }
-    
+
     public List<FcUnit> selectUnitByBuildingCode(String buildingCode) {
         QueryWrapper<FcUnit> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("building_code", buildingCode);
         queryWrapper.select("unit_name", "unit_code");
         List<FcUnit> fcUnits = fcUnitMapper.selectList(queryWrapper);
         return fcUnits;
-        
+
     }
-    
+
     public List<FcCell> selectCell(String unitCode) {
         QueryWrapper<FcCell> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("unit_code", unitCode);
         List<FcCell> fcCell = fcCellMapper.selectList(queryWrapper);
         return fcCell;
-        
+
     }
-    
-    
+
+
     public List<FcEstate> selectEstate(String company){
         QueryWrapper<FcEstate> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("company", company);
         List<FcEstate> fcEstates = fcEstateMapper.selectList(queryWrapper);
         System.out.println(fcEstates);
         return fcEstates;
+    }
     
+    public Integer updateCell(FcCell fcCell){
+        int update = fcCellMapper.updateById(fcCell);
+        return update;
+        
     }
     
     
