@@ -186,6 +186,11 @@ public class EstateService {
         
     }
     
+    public List<FcEstate> selectFcEstate(){
+        List<FcEstate> fcEstates = fcEstateMapper.selectEstate();
+        return fcEstates;
+    }
+    
     
     
 }

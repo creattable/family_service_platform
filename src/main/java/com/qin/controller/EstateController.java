@@ -179,4 +179,12 @@ public class EstateController {
     }
     
     
+    @RequestMapping("/estate/selectFcEstate")
+    public String selectFcEstate(){
+        System.out.println("selectFcEstate");
+        List<FcEstate> fcEstates = estateService.selectFcEstate();
+        return JSONObject.toJSONString(new ReturnObject(fcEstates));
+    }
+    
+    
 }

@@ -32,5 +32,9 @@
     <sql id="Base_Column_List">
         id, estate_code, estate_name, estate_addr, cover_area, build_area, green_area, road_area, building_number, building_leader, company_name, company_behalf, contact, contact_phone, contact_addr, car_space_delay_rate, car_space_over_day, estate_type, street_lamp_number, hfcNum, remark, company
     </sql>
+    
+    <select id="selectEstate" resultType="com.qin.bean.FcEstate">
+        select id,estate_name from fc_estate
+    </select>
 
 </mapper>
